@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TravelMind",
-    "slug": "TravelMind",
+    "slug": "travelmind",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,10 +10,11 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#C0D1BC"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.travelmind.app"
     },
     "android": {
       "adaptiveIcon": {
