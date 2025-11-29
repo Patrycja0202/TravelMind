@@ -17,6 +17,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  ImageBackground,
+  Dimensions,
 } from 'react-native';
 
 // Theme
@@ -54,21 +56,122 @@ const PrimaryButton = ({ title, onPress, variant = 'primary' }: any) => (
   </TouchableOpacity>
 );
 
-// Welcome Screen
-const WelcomeScreen = ({ onGetStarted }: any) => (
-  <SafeAreaView style={styles.container}>
-    <View style={styles.content}>
-      <Text style={styles.emoji}>🌍</Text>
-      <Text style={styles.title}>Welcome to TravelMind</Text>
-      <Text style={styles.subtitle}>
-        Track your journeys, plan your dreams, and explore the world one country at a time.
-      </Text>
-      <View style={{ width: '100%', marginTop: 40 }}>
-        <PrimaryButton title="Get Started" onPress={onGetStarted} />
+// Welcome Screen with Bento Grid
+const WelcomeScreen = ({ onGetStarted }: any) => {
+  const { width, height } = Dimensions.get('window');
+
+  return (
+    <View style={styles.welcomeContainer}>
+      {/* Bento Grid Background */}
+      <View style={styles.bentoGrid}>
+        {/* Top Row */}
+        <View style={[styles.topRow, { height: height * 0.35 }]}>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800' }}
+            style={[styles.bentoItem, styles.bentoLarge]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+          <View style={styles.bentoColumn}>
+            <ImageBackground
+              source={{ uri: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400' }}
+              style={[styles.bentoItem, styles.bentoSmall]}
+              resizeMode="cover"
+            >
+              <View style={styles.imageOverlay} />
+            </ImageBackground>
+            <ImageBackground
+              source={{ uri: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400' }}
+              style={[styles.bentoItem, styles.bentoSmall]}
+              resizeMode="cover"
+            >
+              <View style={styles.imageOverlay} />
+            </ImageBackground>
+          </View>
+        </View>
+
+        {/* Middle Row */}
+        <View style={[styles.middleRow, { height: height * 0.25 }]}>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400' }}
+            style={[styles.bentoItem, styles.bentoMedium]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=400' }}
+            style={[styles.bentoItem, styles.bentoMedium]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+        </View>
+
+        {/* Bottom Row */}
+        <View style={[styles.bottomRow, { height: height * 0.4 }]}>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400' }}
+            style={[styles.bentoItem, styles.bentoSmall]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800' }}
+            style={[styles.bentoItem, styles.bentoLarge]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+        </View>
       </View>
+
+      {/* White overlay gradient */}
+      <View style={styles.whiteOverlay} />
+
+      {/* Content Card */}
+      <SafeAreaView style={styles.contentWrapper}>
+        <View style={styles.card}>
+          {/* Logo */}
+          <View style={styles.logoContainer}>
+            <View style={styles.iconCircle}>
+              <Text style={styles.icon}>✈️</Text>
+            </View>
+            <Text style={styles.logo}>TRAVEL MIND</Text>
+          </View>
+
+          {/* Tagline */}
+          <Text style={styles.tagline}>Your Journey, Your Story</Text>
+
+          {/* Description */}
+          <Text style={styles.description}>
+            Track your adventures, set travel goals, and explore the world one destination at a time
+          </Text>
+
+          {/* Get Started Button */}
+          <View style={{ width: '100%', marginBottom: theme.spacing.lg }}>
+            <PrimaryButton title="Get Started" onPress={onGetStarted} />
+          </View>
+
+          {/* Features */}
+          <View style={styles.features}>
+            <View style={styles.feature}>
+              <Text style={styles.featureNumber}>195</Text>
+              <Text style={styles.featureLabel}>Countries</Text>
+            </View>
+            <View style={styles.featureDivider} />
+            <View style={styles.feature}>
+              <Text style={styles.featureNumber}>Goal</Text>
+              <Text style={styles.featureLabel}>Tracking</Text>
+            </View>
+          </View>
+        </View>
+      </SafeAreaView>
     </View>
-  </SafeAreaView>
-);
+  );
+};
 
 // Login Screen
 const LoginScreen = ({ onLogin }: any) => {
@@ -339,6 +442,69 @@ export default function App() {
 // Styles
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.background },
+
+  // Welcome Screen Bento Grid Styles
+  welcomeContainer: { flex: 1, backgroundColor: '#F0F0F0' },
+  bentoGrid: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, padding: 0 },
+  topRow: { flexDirection: 'row', gap: 0 },
+  middleRow: { flexDirection: 'row', gap: 0 },
+  bottomRow: { flexDirection: 'row', gap: 0 },
+  bentoColumn: { flex: 1, gap: 0 },
+  bentoItem: { overflow: 'hidden' },
+  bentoLarge: { flex: 2 },
+  bentoMedium: { flex: 1 },
+  bentoSmall: { flex: 1 },
+  imageOverlay: { width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.15)' },
+  whiteOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(255, 255, 255, 0.3)' },
+  contentWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: theme.spacing.lg },
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 32,
+    padding: theme.spacing.xl,
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  logoContainer: { alignItems: 'center', marginBottom: theme.spacing.md },
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: theme.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  icon: { fontSize: 32 },
+  logo: { fontSize: 28, fontWeight: 'bold', color: theme.colors.text.primary, letterSpacing: 1 },
+  tagline: { fontSize: 18, color: theme.colors.text.primary, marginBottom: theme.spacing.md },
+  description: {
+    fontSize: 15,
+    color: theme.colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: theme.spacing.lg,
+  },
+  features: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+  },
+  feature: { alignItems: 'center', flex: 1 },
+  featureNumber: { fontSize: 20, fontWeight: 'bold', color: theme.colors.text.secondary, marginBottom: 2 },
+  featureLabel: { fontSize: 13, color: theme.colors.text.secondary },
+  featureDivider: { width: 1, height: 40, backgroundColor: 'rgba(0,0,0,0.1)', marginHorizontal: theme.spacing.md },
+
+  // Other Screens
   content: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: theme.spacing.xl },
   emoji: { fontSize: 80, marginBottom: theme.spacing.lg },
   title: { fontSize: 32, fontWeight: 'bold', color: theme.colors.text.primary, textAlign: 'center', marginBottom: theme.spacing.md },
