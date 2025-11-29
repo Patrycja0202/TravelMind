@@ -1,19 +1,50 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Modal, TouchableOpacity } from 'react-native';
 import { theme } from '../theme';
-import { BentoCard, PrimaryButton } from '../components';
+import { BentoCard, PrimaryButton, TextInputField } from '../components';
 
 export default function BucketListScreen() {
-  const bucketListItems = [
-    { id: 1, country: 'Japan', emoji: '🇯🇵', checked: true },
-    { id: 2, country: 'Iceland', emoji: '🇮🇸', checked: true },
-    { id: 3, country: 'New Zealand', emoji: '🇳🇿', checked: true },
+  const [bucketListItems, setBucketListItems] = useState([
+    { id: 1, country: 'Japan', color: '#E91E63', checked: true },
+    { id: 2, country: 'Iceland', color: '#2196F3', checked: true },
+    { id: 3, country: 'New Zealand', color: '#4CAF50', checked: true },
+  ]);
+
+  const [exploreDestinations, setExploreDestinations] = useState([
+    { id: 4, country: 'Norway', color: '#FF5722' },
+    { id: 5, country: 'Peru', color: '#9C27B0' },
+  ]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newCountryName, setNewCountryName] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#8AA68A');
+
+  const availableColors = [
+    '#E91E63', '#2196F3', '#4CAF50', '#FF5722', '#9C27B0',
+    '#FF9800', '#00BCD4', '#FFEB3B', '#795548', '#607D8B',
   ];
 
-  const exploreDestinations = [
-    { id: 4, country: 'Norway', emoji: '🇳🇴' },
-    { id: 5, country: 'Peru', emoji: '🇵🇪' },
-  ];
+  const getInitials = (country: string) => {
+    const words = country.split(' ');
+    if (words.length > 1) {
+      return words[0][0] + words[1][0];
+    }
+    return country.substring(0, 2).toUpperCase();
+  };
+
+  const handleAddCountry = () => {
+    if (newCountryName.trim()) {
+      const newCountry = {
+        id: Date.now(),
+        country: newCountryName.trim(),
+        color: selectedColor,
+      };
+      setExploreDestinations([...exploreDestinations, newCountry]);
+      setNewCountryName('');
+      setSelectedColor('#8AA68A');
+      setModalVisible(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +57,9 @@ export default function BucketListScreen() {
         <View style={styles.grid}>
           {bucketListItems.map((item) => (
             <BentoCard key={item.id} size="small" style={styles.countryCard}>
-              <Text style={styles.countryEmoji}>{item.emoji}</Text>
+              <View style={[styles.countryIndicator, { backgroundColor: item.color }]}>
+                <Text style={styles.countryInitials}>{getInitials(item.country)}</Text>
+              </View>
               <Text style={styles.countryName}>{item.country}</Text>
               {item.checked && (
                 <View style={styles.checkmark}>
@@ -41,20 +74,78 @@ export default function BucketListScreen() {
         <View style={styles.list}>
           {exploreDestinations.map((item) => (
             <View key={item.id} style={styles.listItem}>
-              <Text style={styles.listEmoji}>{item.emoji}</Text>
+              <View style={[styles.listIndicator, { backgroundColor: item.color }]}>
+                <Text style={styles.listInitials}>{getInitials(item.country)}</Text>
+              </View>
               <Text style={styles.listCountry}>{item.country}</Text>
-              <Text style={styles.addButton}>+</Text>
+              <Text style={styles.addIcon}>+</Text>
             </View>
           ))}
         </View>
 
         <PrimaryButton
           title="+ Add New Country"
-          onPress={() => console.log('Add country')}
+          onPress={() => setModalVisible(true)}
           variant="primary"
           style={styles.addButton}
         />
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add New Country</Text>
+
+            <TextInputField
+              placeholder="Country name"
+              value={newCountryName}
+              onChangeText={setNewCountryName}
+              autoCapitalize="words"
+            />
+
+            <Text style={styles.colorLabel}>Select Color:</Text>
+            <View style={styles.colorGrid}>
+              {availableColors.map((color) => (
+                <TouchableOpacity
+                  key={color}
+                  style={[
+                    styles.colorOption,
+                    { backgroundColor: color },
+                    selectedColor === color && styles.selectedColor,
+                  ]}
+                  onPress={() => setSelectedColor(color)}
+                >
+                  {selectedColor === color && <Text style={styles.checkmark}>✓</Text>}
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={styles.modalButtons}>
+              <PrimaryButton
+                title="Cancel"
+                onPress={() => {
+                  setModalVisible(false);
+                  setNewCountryName('');
+                  setSelectedColor('#8AA68A');
+                }}
+                variant="outline"
+                style={styles.modalButton}
+              />
+              <PrimaryButton
+                title="Add Country"
+                onPress={handleAddCountry}
+                variant="primary"
+                style={styles.modalButton}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -92,13 +183,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.card.background,
   },
-  countryEmoji: {
-    fontSize: 40,
+  countryIndicator: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: theme.spacing.sm,
+  },
+  countryInitials: {
+    fontSize: 20,
+    fontFamily: theme.typography.fonts.bold,
+    color: '#FFFFFF',
   },
   countryName: {
     fontSize: theme.typography.sizes.md,
-    fontFamily: theme.typography.fonts.semiBold,
+    fontFamily: theme.typography.fonts.bold,
     color: theme.colors.text.primary,
   },
   checkmark: {
@@ -127,17 +227,91 @@ const styles = StyleSheet.create({
     padding: theme.spacing.md,
     borderRadius: theme.borderRadius.md,
   },
-  listEmoji: {
-    fontSize: 24,
+  listIndicator: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: theme.spacing.md,
+  },
+  listInitials: {
+    fontSize: 14,
+    fontFamily: theme.typography.fonts.bold,
+    color: '#FFFFFF',
   },
   listCountry: {
     flex: 1,
     fontSize: theme.typography.sizes.md,
-    fontFamily: theme.typography.fonts.medium,
+    fontFamily: theme.typography.fonts.bold,
     color: theme.colors.text.primary,
+  },
+  addIcon: {
+    fontSize: 24,
+    color: theme.colors.text.secondary,
+    fontFamily: theme.typography.fonts.bold,
   },
   addButton: {
     marginTop: theme.spacing.lg,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing.lg,
+  },
+  modalContent: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing.xl,
+    width: '100%',
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: theme.typography.sizes.xxl,
+    fontFamily: theme.typography.fonts.bold,
+    color: theme.colors.text.primary,
+    marginBottom: theme.spacing.lg,
+    textAlign: 'center',
+  },
+  colorLabel: {
+    fontSize: theme.typography.sizes.md,
+    fontFamily: theme.typography.fonts.semiBold,
+    color: theme.colors.text.primary,
+    marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
+  },
+  colorGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
+  },
+  colorOption: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  selectedColor: {
+    borderColor: theme.colors.text.primary,
+    borderWidth: 3,
+  },
+  checkmark: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontFamily: theme.typography.fonts.bold,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.md,
+  },
+  modalButton: {
+    flex: 1,
   },
 });

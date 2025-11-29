@@ -9,7 +9,7 @@ export default function GoalsScreen() {
     {
       id: 1,
       country: 'Italy',
-      emoji: '🇮🇹',
+      color: '#00C853',
       destination: 'Visit Rome and Florence',
       date: 'June 2025',
       completed: true,
@@ -17,7 +17,7 @@ export default function GoalsScreen() {
     {
       id: 2,
       country: 'Spain',
-      emoji: '🇪🇸',
+      color: '#FFD600',
       destination: 'Barcelona architecture tour',
       date: 'August 2025',
       completed: true,
@@ -25,7 +25,7 @@ export default function GoalsScreen() {
     {
       id: 3,
       country: 'Portugal',
-      emoji: '🇵🇹',
+      color: '#FF6D00',
       destination: 'Lisbon and Porto',
       date: 'October 2025',
       completed: true,
@@ -33,12 +33,20 @@ export default function GoalsScreen() {
     {
       id: 4,
       country: 'Switzerland',
-      emoji: '🇨🇭',
+      color: '#D50000',
       destination: 'Swiss Alps hiking',
       date: 'December 2025',
       completed: false,
     },
   ];
+
+  const getInitials = (country: string) => {
+    const words = country.split(' ');
+    if (words.length > 1) {
+      return words[0][0] + words[1][0];
+    }
+    return country.substring(0, 2).toUpperCase();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +82,9 @@ export default function GoalsScreen() {
               style={styles.goalCard}
             >
               <View style={styles.goalHeader}>
-                <Text style={styles.goalEmoji}>{goal.emoji}</Text>
+                <View style={[styles.goalIndicator, { backgroundColor: goal.color }]}>
+                  <Text style={styles.goalInitials}>{getInitials(goal.country)}</Text>
+                </View>
                 {goal.completed && (
                   <View style={styles.completedBadge}>
                     <Ionicons name="checkmark" size={16} color="#fff" />
@@ -181,8 +191,17 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: theme.spacing.sm,
   },
-  goalEmoji: {
-    fontSize: 32,
+  goalIndicator: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  goalInitials: {
+    fontSize: 18,
+    fontFamily: theme.typography.fonts.bold,
+    color: '#FFFFFF',
   },
   completedBadge: {
     backgroundColor: theme.colors.success,
