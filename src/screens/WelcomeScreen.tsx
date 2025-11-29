@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import { theme } from '../theme';
@@ -13,161 +14,268 @@ const { width, height } = Dimensions.get('window');
 
 export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.bentoContainer}>
-        {/* Top Row - Large image on left, small on right */}
+    <View style={styles.container}>
+      {/* Bento Grid Background */}
+      <View style={styles.bentoGrid}>
+        {/* Top Row */}
         <View style={styles.topRow}>
           <ImageBackground
             source={require('../../assets/onboarding-1.jpg')}
-            style={styles.largeBentoCard}
-            imageStyle={styles.imageStyle}
+            style={[styles.bentoItem, styles.bentoLarge]}
+            resizeMode="cover"
           >
-            <View style={styles.overlay} />
+            <View style={styles.imageOverlay} />
           </ImageBackground>
-
-          <View style={styles.topRightColumn}>
+          <View style={styles.bentoColumn}>
             <ImageBackground
               source={require('../../assets/onboarding-2.jpg')}
-              style={styles.smallBentoCard}
-              imageStyle={styles.imageStyle}
+              style={[styles.bentoItem, styles.bentoSmall]}
+              resizeMode="cover"
             >
-              <View style={styles.overlay} />
+              <View style={styles.imageOverlay} />
             </ImageBackground>
-
             <ImageBackground
               source={require('../../assets/onboarding-3.jpg')}
-              style={styles.smallBentoCard}
-              imageStyle={styles.imageStyle}
+              style={[styles.bentoItem, styles.bentoSmall]}
+              resizeMode="cover"
             >
-              <View style={styles.overlay} />
+              <View style={styles.imageOverlay} />
             </ImageBackground>
           </View>
         </View>
 
-        {/* Content Overlay */}
-        <View style={styles.contentOverlay}>
-          <View style={styles.textContainer}>
-            <Text style={styles.emoji}>🌍</Text>
-            <Text style={styles.title}>Welcome to TravelMind</Text>
-            <Text style={styles.subtitle}>
-              Track your journeys, plan your dreams, and explore the world one country at a time.
-            </Text>
+        {/* Middle Row */}
+        <View style={styles.middleRow}>
+          <ImageBackground
+            source={require('../../assets/onboarding-4.jpg')}
+            style={[styles.bentoItem, styles.bentoMedium]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+          <ImageBackground
+            source={require('../../assets/onboarding-5.jpg')}
+            style={[styles.bentoItem, styles.bentoMedium]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+        </View>
+
+        {/* Bottom Row */}
+        <View style={styles.bottomRow}>
+          <ImageBackground
+            source={require('../../assets/onboarding-1.jpg')}
+            style={[styles.bentoItem, styles.bentoSmall]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+          <ImageBackground
+            source={require('../../assets/onboarding-3.jpg')}
+            style={[styles.bentoItem, styles.bentoLarge]}
+            resizeMode="cover"
+          >
+            <View style={styles.imageOverlay} />
+          </ImageBackground>
+        </View>
+      </View>
+
+      {/* Overlay Gradient */}
+      <LinearGradient
+        colors={['rgba(255,255,255,0.3)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.3)']}
+        style={styles.overlay}
+      />
+
+      {/* Content Card */}
+      <View style={styles.contentWrapper}>
+        <View style={styles.card}>
+          {/* Logo */}
+          <View style={styles.logoContainer}>
+            <View style={styles.iconCircle}>
+              <Text style={styles.icon}>✈️</Text>
+            </View>
+            <Text style={styles.logo}>TRAVEL MIND</Text>
           </View>
 
-          <View style={styles.buttonContainer}>
+          {/* Tagline */}
+          <Text style={styles.tagline}>Your Journey, Your Story</Text>
+
+          {/* Description */}
+          <Text style={styles.description}>
+            Track your adventures, set travel goals, and explore the world one destination at a time
+          </Text>
+
+          {/* Get Started Button */}
+          <View style={styles.buttonWrapper}>
             <PrimaryButton
               title="Get Started"
               onPress={() => navigation.navigate('Login')}
               variant="primary"
             />
           </View>
-        </View>
 
-        {/* Bottom Row - Two medium cards */}
-        <View style={styles.bottomRow}>
-          <ImageBackground
-            source={require('../../assets/onboarding-4.jpg')}
-            style={styles.mediumBentoCard}
-            imageStyle={styles.imageStyle}
-          >
-            <View style={styles.overlay} />
-          </ImageBackground>
-
-          <ImageBackground
-            source={require('../../assets/onboarding-5.jpg')}
-            style={styles.mediumBentoCard}
-            imageStyle={styles.imageStyle}
-          >
-            <View style={styles.overlay} />
-          </ImageBackground>
+          {/* Features */}
+          <View style={styles.features}>
+            <View style={styles.feature}>
+              <Text style={styles.featureNumber}>195</Text>
+              <Text style={styles.featureLabel}>Countries</Text>
+            </View>
+            <View style={styles.featureDivider} />
+            <View style={styles.feature}>
+              <Text style={styles.featureNumber}>Goal</Text>
+              <Text style={styles.featureLabel}>Tracking</Text>
+            </View>
+          </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: '#F0F0F0',
   },
-  bentoContainer: {
-    flex: 1,
-    padding: theme.spacing.sm,
+  bentoGrid: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 0,
   },
   topRow: {
     flexDirection: 'row',
-    height: height * 0.5,
-    marginBottom: theme.spacing.sm,
+    height: height * 0.35,
+    gap: 0,
   },
-  largeBentoCard: {
-    flex: 2,
-    marginRight: theme.spacing.sm,
-    borderRadius: theme.borderRadius.xl,
-    overflow: 'hidden',
-  },
-  topRightColumn: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  smallBentoCard: {
-    flex: 1,
-    borderRadius: theme.borderRadius.xl,
-    overflow: 'hidden',
-    marginBottom: theme.spacing.sm,
+  middleRow: {
+    flexDirection: 'row',
+    height: height * 0.25,
+    gap: 0,
   },
   bottomRow: {
     flexDirection: 'row',
-    height: height * 0.2,
-    marginTop: theme.spacing.sm,
+    height: height * 0.4,
+    gap: 0,
   },
-  mediumBentoCard: {
+  bentoColumn: {
     flex: 1,
-    marginHorizontal: theme.spacing.xs,
-    borderRadius: theme.borderRadius.xl,
+    gap: 0,
+  },
+  bentoItem: {
     overflow: 'hidden',
   },
-  imageStyle: {
-    borderRadius: theme.borderRadius.xl,
+  bentoLarge: {
+    flex: 2,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
+  bentoMedium: {
+    flex: 1,
+  },
+  bentoSmall: {
+    flex: 1,
+  },
+  imageOverlay: {
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
   },
-  contentOverlay: {
-    ...StyleSheet.absoluteFillObject,
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  contentWrapper: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.xl,
-  },
-  textContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    paddingVertical: theme.spacing.xl,
     paddingHorizontal: theme.spacing.lg,
-    borderRadius: theme.borderRadius.xl,
-    marginBottom: theme.spacing.xl,
   },
-  emoji: {
-    fontSize: 60,
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 32,
+    padding: theme.spacing.xl,
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  logoContainer: {
+    alignItems: 'center',
     marginBottom: theme.spacing.md,
   },
-  title: {
-    fontSize: theme.typography.sizes.xxxl,
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: theme.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  icon: {
+    fontSize: 32,
+  },
+  logo: {
+    fontSize: 28,
     fontFamily: theme.typography.fonts.bold,
     color: theme.colors.text.primary,
-    textAlign: 'center',
+    letterSpacing: 1,
+  },
+  tagline: {
+    fontSize: 18,
+    fontFamily: theme.typography.fonts.regular,
+    color: theme.colors.text.primary,
     marginBottom: theme.spacing.md,
   },
-  subtitle: {
-    fontSize: theme.typography.sizes.md,
+  description: {
+    fontSize: 15,
     fontFamily: theme.typography.fonts.regular,
     color: theme.colors.text.secondary,
     textAlign: 'center',
-    lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.relaxed,
+    lineHeight: 22,
+    marginBottom: theme.spacing.lg,
   },
-  buttonContainer: {
+  buttonWrapper: {
     width: '100%',
-    maxWidth: 400,
+    marginBottom: theme.spacing.lg,
+  },
+  features: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+  },
+  feature: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  featureNumber: {
+    fontSize: 20,
+    fontFamily: theme.typography.fonts.bold,
+    color: theme.colors.text.secondary,
+    marginBottom: 2,
+  },
+  featureLabel: {
+    fontSize: 13,
+    fontFamily: theme.typography.fonts.regular,
+    color: theme.colors.text.tertiary,
+  },
+  featureDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    marginHorizontal: theme.spacing.md,
   },
 });
