@@ -4,11 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../theme';
 import { MainTabParamList } from '../types/navigation';
 
-// Import screens (we'll create these next)
+// Import screens
 import DashboardScreen from '../screens/DashboardScreen';
 import BucketListScreen from '../screens/BucketListScreen';
 import GoalsScreen from '../screens/GoalsScreen';
-import ShareScreen from '../screens/ShareScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -44,10 +43,21 @@ export default function TabNavigator() {
         name="Dashboard"
         component={DashboardScreen}
         options={{
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
           headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Goals"
+        component={GoalsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="trophy" size={size} color={color} />
+          ),
+          headerTitle: 'My Goals',
         }}
       />
       <Tab.Screen
@@ -59,25 +69,6 @@ export default function TabNavigator() {
             <Ionicons name="list" size={size} color={color} />
           ),
           headerTitle: 'Bucket List',
-        }}
-      />
-      <Tab.Screen
-        name="Goals"
-        component={GoalsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="trophy" size={size} color={color} />
-          ),
-          headerTitle: 'Travel Goals',
-        }}
-      />
-      <Tab.Screen
-        name="Share"
-        component={ShareScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="share-social" size={size} color={color} />
-          ),
         }}
       />
       <Tab.Screen

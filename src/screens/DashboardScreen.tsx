@@ -1,47 +1,177 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Animated,
+  Platform,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '../theme';
-import { BentoCard } from '../components';
+import {
+  LargeStatCard,
+  GoalCard,
+  SecondaryButton,
+  SectionHeader,
+} from '../components';
+import { RootStackParamList, Goal } from '../types/navigation';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+// Mock data - in a real app, this would come from state management or API
+const MOCK_VISITED_COUNTRIES = [
+  'France',
+  'Italy',
+  'Spain',
+  'Germany',
+  'United Kingdom',
+  'Japan',
+  'USA',
+  'Canada',
+];
+
+const MOCK_GOALS: Goal[] = [
+  {
+    id: '1',
+    country: 'Portugal',
+    flag: '🇵🇹',
+    location: 'Lisbon and Porto',
+    date: 'October 2025',
+    completed: true,
+  },
+  {
+    id: '2',
+    country: 'Switzerland',
+    flag: '🇨🇭',
+    location: 'Swiss Alps hiking',
+    date: 'December 2025',
+    completed: false,
+  },
+];
 
 export default function DashboardScreen() {
+  const navigation = useNavigation<NavigationProp>();
+
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    // Entrance animation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        tension: 50,
+        friction: 8,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const handleAddCountry = () => {
+    navigation.navigate('AddCountry');
+  };
+
+  const handleAddGoal = () => {
+    navigation.navigate('AddGoal');
+  };
+
+  const handleGoalPress = (goal: Goal) => {
+    navigation.navigate('GoalDetails', { goal });
+  };
+
+  const completedGoals = MOCK_GOALS.filter((g) => g.completed).length;
+  const totalGoals = MOCK_GOALS.length;
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <Animated.View
+          style={[
+            styles.header,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
           <Text style={styles.title}>Dashboard</Text>
           <Text style={styles.subtitle}>Your travel journey at a glance</Text>
-        </View>
+        </Animated.View>
 
-        <View style={styles.bentoGrid}>
-          {/* Large card - World Explored */}
-          <BentoCard size="large" backgroundColor={theme.colors.primary}>
-            <Text style={styles.cardLabel}>World Explored</Text>
-            <Text style={styles.cardValue}>3.6%</Text>
-            <Text style={styles.cardSubtext}>7 of 195 countries</Text>
-          </BentoCard>
+        {/* World Explored Card */}
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
+          <LargeStatCard visitedCountries={MOCK_VISITED_COUNTRIES.length} />
+        </Animated.View>
 
-          {/* Row with two medium cards */}
-          <View style={styles.row}>
-            <BentoCard style={styles.halfCard} backgroundColor="#E8F3E8">
-              <Text style={styles.cardLabel}>Travel Goals</Text>
-              <Text style={styles.cardValue}>3 of 4</Text>
-              <Text style={styles.cardSubtext}>75% complete</Text>
-            </BentoCard>
+        {/* Add New Country Button */}
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
+          <SecondaryButton
+            title="Add New Country"
+            icon="add-circle-outline"
+            onPress={handleAddCountry}
+            style={styles.addCountryButton}
+          />
+        </Animated.View>
 
-            <BentoCard style={styles.halfCard} backgroundColor="#F5E6D3">
-              <Text style={styles.cardLabel}>Bucket List</Text>
-              <Text style={styles.cardValue}>3</Text>
-              <Text style={styles.cardSubtext}>Countries</Text>
-            </BentoCard>
-          </View>
+        {/* My Goals Section */}
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
+          <SectionHeader
+            title="My Goals"
+            rightLabel={`${completedGoals}/${totalGoals} completed`}
+          />
 
-          {/* Next trip card */}
-          <BentoCard backgroundColor="#D4E5F7">
-            <Text style={styles.cardLabel}>Next Trip</Text>
-            <Text style={styles.cardTitle}>🇵🇹 Portugal</Text>
-            <Text style={styles.cardSubtext}>Lisbon and Porto • October 2025</Text>
-          </BentoCard>
-        </View>
+          {/* Goal Cards */}
+          {MOCK_GOALS.map((goal) => (
+            <GoalCard
+              key={goal.id}
+              goal={goal}
+              onPress={() => handleGoalPress(goal)}
+            />
+          ))}
+        </Animated.View>
+
+        {/* Add My Goal Button */}
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
+          <SecondaryButton
+            title="Add My Goal"
+            icon="add-outline"
+            onPress={handleAddGoal}
+            style={styles.addGoalButton}
+          />
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,6 +184,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: theme.spacing.lg,
+    paddingBottom: theme.spacing.xxl,
   },
   header: {
     marginBottom: theme.spacing.lg,
@@ -69,37 +200,10 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fonts.regular,
     color: theme.colors.text.secondary,
   },
-  bentoGrid: {
-    gap: theme.spacing.md,
+  addCountryButton: {
+    marginBottom: theme.spacing.xl,
   },
-  row: {
-    flexDirection: 'row',
-    gap: theme.spacing.md,
-  },
-  halfCard: {
-    flex: 1,
-  },
-  cardLabel: {
-    fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fonts.medium,
-    color: theme.colors.text.secondary,
-    marginBottom: theme.spacing.xs,
-  },
-  cardValue: {
-    fontSize: theme.typography.sizes.display,
-    fontFamily: theme.typography.fonts.bold,
-    color: theme.colors.text.primary,
-    marginBottom: theme.spacing.xs,
-  },
-  cardTitle: {
-    fontSize: theme.typography.sizes.xl,
-    fontFamily: theme.typography.fonts.bold,
-    color: theme.colors.text.primary,
-    marginBottom: theme.spacing.xs,
-  },
-  cardSubtext: {
-    fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fonts.regular,
-    color: theme.colors.text.secondary,
+  addGoalButton: {
+    marginTop: theme.spacing.md,
   },
 });
