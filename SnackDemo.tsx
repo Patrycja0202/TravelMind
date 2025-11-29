@@ -67,7 +67,7 @@ const WelcomeScreen = ({ onGetStarted }: any) => {
         {/* Top Row */}
         <View style={[styles.topRow, { height: height * 0.35 }]}>
           <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800' }}
+            source={{ uri: 'https://images.unsplash.com/photo-O453M2Liufs?w=800' }}
             style={[styles.bentoItem, styles.bentoLarge]}
             resizeMode="cover"
           >
@@ -75,14 +75,14 @@ const WelcomeScreen = ({ onGetStarted }: any) => {
           </ImageBackground>
           <View style={styles.bentoColumn}>
             <ImageBackground
-              source={{ uri: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400' }}
+              source={{ uri: 'https://images.unsplash.com/photo-A5rCN8626Ck?w=400' }}
               style={[styles.bentoItem, styles.bentoSmall]}
               resizeMode="cover"
             >
               <View style={styles.imageOverlay} />
             </ImageBackground>
             <ImageBackground
-              source={{ uri: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400' }}
+              source={{ uri: 'https://images.unsplash.com/photo-V83v-MYB_Z8?w=400' }}
               style={[styles.bentoItem, styles.bentoSmall]}
               resizeMode="cover"
             >
@@ -94,14 +94,14 @@ const WelcomeScreen = ({ onGetStarted }: any) => {
         {/* Middle Row */}
         <View style={[styles.middleRow, { height: height * 0.25 }]}>
           <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400' }}
+            source={{ uri: 'https://images.unsplash.com/photo-XGKaRnWjv1c?w=400' }}
             style={[styles.bentoItem, styles.bentoMedium]}
             resizeMode="cover"
           >
             <View style={styles.imageOverlay} />
           </ImageBackground>
           <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=400' }}
+            source={{ uri: 'https://images.unsplash.com/photo-0wMmxNB6Xzc?w=400' }}
             style={[styles.bentoItem, styles.bentoMedium]}
             resizeMode="cover"
           >
@@ -112,14 +112,14 @@ const WelcomeScreen = ({ onGetStarted }: any) => {
         {/* Bottom Row */}
         <View style={[styles.bottomRow, { height: height * 0.4 }]}>
           <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400' }}
+            source={{ uri: 'https://images.unsplash.com/photo-A5rCN8626Ck?w=400' }}
             style={[styles.bentoItem, styles.bentoSmall]}
             resizeMode="cover"
           >
             <View style={styles.imageOverlay} />
           </ImageBackground>
           <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800' }}
+            source={{ uri: 'https://images.unsplash.com/photo-O453M2Liufs?w=800' }}
             style={[styles.bentoItem, styles.bentoLarge]}
             resizeMode="cover"
           >
