@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
@@ -20,14 +20,26 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         {/* Top Row */}
         <View style={styles.topRow}>
           <View style={[styles.bentoItem, styles.bentoLarge]}>
-            <View style={[styles.photoPlaceholder, { backgroundColor: '#8AA68A' }]} />
+            <Image
+              source={require('../../assets/onboarding-1.jpg')}
+              style={styles.photoImage}
+              resizeMode="cover"
+            />
           </View>
           <View style={styles.bentoColumn}>
             <View style={[styles.bentoItem, styles.bentoSmall]}>
-              <View style={[styles.photoPlaceholder, { backgroundColor: '#C0D1BC' }]} />
+              <Image
+                source={require('../../assets/onboarding-2.jpg')}
+                style={styles.photoImage}
+                resizeMode="cover"
+              />
             </View>
             <View style={[styles.bentoItem, styles.bentoSmall]}>
-              <View style={[styles.photoPlaceholder, { backgroundColor: '#A8BFA4' }]} />
+              <Image
+                source={require('../../assets/onboarding-3.jpg')}
+                style={styles.photoImage}
+                resizeMode="cover"
+              />
             </View>
           </View>
         </View>
@@ -35,20 +47,36 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
         {/* Middle Row */}
         <View style={styles.middleRow}>
           <View style={[styles.bentoItem, styles.bentoMedium]}>
-            <View style={[styles.photoPlaceholder, { backgroundColor: '#9CAE93' }]} />
+            <Image
+              source={require('../../assets/onboarding-4.jpg')}
+              style={styles.photoImage}
+              resizeMode="cover"
+            />
           </View>
           <View style={[styles.bentoItem, styles.bentoMedium]}>
-            <View style={[styles.photoPlaceholder, { backgroundColor: '#B4C5AF' }]} />
+            <Image
+              source={require('../../assets/onboarding-5.jpg')}
+              style={styles.photoImage}
+              resizeMode="cover"
+            />
           </View>
         </View>
 
         {/* Bottom Row */}
         <View style={styles.bottomRow}>
           <View style={[styles.bentoItem, styles.bentoSmall]}>
-            <View style={[styles.photoPlaceholder, { backgroundColor: '#A0B89C' }]} />
+            <Image
+              source={require('../../assets/onboarding-1.jpg')}
+              style={styles.photoImage}
+              resizeMode="cover"
+            />
           </View>
           <View style={[styles.bentoItem, styles.bentoLarge]}>
-            <View style={[styles.photoPlaceholder, { backgroundColor: '#8DA487' }]} />
+            <Image
+              source={require('../../assets/onboarding-2.jpg')}
+              style={styles.photoImage}
+              resizeMode="cover"
+            />
           </View>
         </View>
       </View>
@@ -149,10 +177,10 @@ const styles = StyleSheet.create({
   bentoSmall: {
     flex: 1,
   },
-  photoPlaceholder: {
+  photoImage: {
     width: '100%',
     height: '100%',
-    opacity: 0.6,
+    opacity: 0.7,
   },
   overlay: {
     position: 'absolute',
