@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types/navigation';
 
 // Import screens
-import WelcomeScreen from '../screens/WelcomeScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import TabNavigator from './TabNavigator';
 
@@ -39,7 +39,7 @@ export default function RootNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isAuthenticated ? (
           <>
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Welcome" component={OnboardingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
           </>
         ) : (
